@@ -21,7 +21,7 @@ public class InputName : MonoBehaviour {
             PlayerPrefs.SetString("NameOfSnake", input.text);
             PlayerPrefs.SetInt("FirstTime", 1);
             Debug.Log("Text has been entered");
-            SceneManager.LoadSceneAsync("MenuScene");
+            SceneManager.LoadSceneAsync("LoadingScene");
         }
         else if (input.text.Length < 3)
         {
@@ -30,20 +30,12 @@ public class InputName : MonoBehaviour {
         }
     }
     void Start () {
-       
-        if (PlayerPrefs.GetInt("FirstTime",0) == 0)
-        {
-            AlertMessage.enabled = false;
+        AlertMessage.enabled = false;
 
             //Adds a listener that invokes the "LockInput" method when the player finishes editing the main input field.
             //Passes the main input field into the method when "LockInput" is invoked
             nameinput.onEndEdit.AddListener(delegate { LockInput(nameinput); });
-        }
-        else
-        {
-            SceneManager.LoadSceneAsync("MenuScene");
-            PlayerPrefs.SetInt("FirstTime", 1);
-        }
+        
     }
 	
 	// Update is called once per frame

@@ -6,6 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scense/LoadingScene.unity
+  - enabled: 1
     path: Assets/Scense/MenuScene.unity
   - enabled: 1
     path: Assets/Scense/Level_1.unity
@@ -37,3 +39,5 @@ EditorBuildSettings:
     path: Assets/Scense/SettingsScene.unity
   - enabled: 1
     path: Assets/Scense/Ahcivments_List.unity
+  - enabled: 1
+    path: Assets/Scense/NewStart.unity

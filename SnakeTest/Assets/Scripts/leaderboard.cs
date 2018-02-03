@@ -58,6 +58,8 @@ public class leaderboard : MonoBehaviour {
 
         }
         AchivmentListText.text = temparr;
+        temparr = " ";
+        AchivmentSys.achivedlist.Clear();
     }
     void ShowLeaderBoard()
     {

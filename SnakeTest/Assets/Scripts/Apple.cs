@@ -41,7 +41,7 @@ public class Apple : MonoBehaviour {
         switch (Application.loadedLevel)
         {
 
-            case 3:
+            case 4:
                 {
                     if (generate % 4 == 0)
                     {
@@ -51,7 +51,7 @@ public class Apple : MonoBehaviour {
                         DefaultAppleLocation();
                     break;
                 }
-            case 4:
+            case 5:
                 {
                     if (generate % 4 == 0)
                     {
@@ -61,7 +61,7 @@ public class Apple : MonoBehaviour {
                         DefaultAppleLocation();
                     break;
                 }
-            case 5:
+            case 6:
                 {
                     if (generate % 4 == 0)
                     {
@@ -80,7 +80,7 @@ public class Apple : MonoBehaviour {
                         DefaultAppleLocation();
                     break;
                 }
-            case 6:
+            case 7:
                 {
                     if (generate % 4 == 0)
                         LocationOfApple(-6.5f, 6.5f, 4.5f, -4.5f);
@@ -88,7 +88,7 @@ public class Apple : MonoBehaviour {
                         DefaultAppleLocation();
                     break;
                 }
-            case 7:
+            case 8:
                 {
                     if (generate % 4 == 0)
                     {
@@ -98,7 +98,7 @@ public class Apple : MonoBehaviour {
                         DefaultAppleLocation();
                     break;
                 }
-            case 8:
+            case 9:
                 {
                     if (generate % 4 == 0)
                     {
@@ -117,7 +117,7 @@ public class Apple : MonoBehaviour {
                         LocationOfApple(-6.4f, 3.3f, 4.17f, -4.16f);
                     break;
                 }
-            case 9:
+            case 10:
                 {
                     if (generate % 4 == 0)
                     {
@@ -147,7 +147,7 @@ public class Apple : MonoBehaviour {
                     break;
 
                 }
-            case 10:
+            case 11:
                 {
                     if (generate % 4 == 0)
                     {
@@ -187,14 +187,9 @@ public class Apple : MonoBehaviour {
 
         switch (Application.loadedLevel)
         {
-            case 1:
-                {
-                    ApplePlacement(redapple);
-                    break;
-                }
             case 2:
                 {
-                    ApplePlacement(redapple, greenapple);
+                    ApplePlacement(redapple);
                     break;
                 }
             case 3:
@@ -209,7 +204,7 @@ public class Apple : MonoBehaviour {
                 }
             case 5:
                 {
-                    ApplePlacement(redapple, greenapple, purpleapple);
+                    ApplePlacement(redapple, greenapple);
                     break;
                 }
             case 6:
@@ -219,20 +214,25 @@ public class Apple : MonoBehaviour {
                 }
             case 7:
                 {
-                    ApplePlacement(greenapple, purpleapple);
+                    ApplePlacement(redapple, greenapple, purpleapple);
                     break;
                 }
             case 8:
                 {
-                    ApplePlacement(greenapple, purpleapple, goldapple);
+                    ApplePlacement(greenapple, purpleapple);
                     break;
                 }
             case 9:
                 {
-                    ApplePlacement(purpleapple, goldapple);
+                    ApplePlacement(greenapple, purpleapple, goldapple);
                     break;
                 }
             case 10:
+                {
+                    ApplePlacement(purpleapple, goldapple);
+                    break;
+                }
+            case 11:
                 {
                     ApplePlacement(purpleapple, goldapple);
                     break;
