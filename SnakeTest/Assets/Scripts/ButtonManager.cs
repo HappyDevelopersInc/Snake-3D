@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class ButtonManager : MonoBehaviour {
     public Text HighscoreText;
@@ -30,6 +31,18 @@ public class ButtonManager : MonoBehaviour {
             Time.timeScale = 1;
             pauseflag = false;
         }
+    }
+    public void OnButtonClick(string newGameLevel)
+    {
+        var go = EventSystem.current.currentSelectedGameObject;
+        if (go != null)
+        {
+            Debug.Log("Clicked on : " + go.name);
+            ItemPurchase.ItemName = go.name;
+        }
+        else
+            Debug.Log("currentSelectedGameObject is null");
+        SceneManager.LoadSceneAsync(newGameLevel);
     }
     public void NewGameBtn(string newGameLevel)
     {

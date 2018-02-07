@@ -43,3 +43,5 @@ EditorBuildSettings:
     path: Assets/Scense/NewStart.unity
   - enabled: 1
     path: Assets/Scense/ShopScene1.unity
+  - enabled: 1
+    path: Assets/Scense/ShopScene2.unity
