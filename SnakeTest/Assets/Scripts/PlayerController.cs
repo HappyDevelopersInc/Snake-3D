@@ -81,7 +81,7 @@ public class PlayerController : MonoBehaviour {
    // int generate = 0;
     public Text nextleveltxt;
     public Text highscoretext;
-    
+    public Text SnakeName;
     //---------------------------------------------
     public GameObject button_lvl1;
     public static AchivmentSys achivmentsystem;
@@ -187,9 +187,9 @@ public class PlayerController : MonoBehaviour {
         Apple.RandomApple();
         GameOverText.text = "";
         ScoreText.text = "Score : " + Score;
-        CreditText.text = "Credits " + Credits; 
-
+        CreditText.text = "Credits " + Credits;
         
+
         //----------------------
         for (int i =0;i<3;i++)
         AddGameObject();
@@ -200,9 +200,9 @@ public class PlayerController : MonoBehaviour {
             LevelChallenge();
 
         //--------------------------
-        
-       
-        switch(Application.loadedLevel)
+
+        SnakeName.text = PlayerPrefs.GetString("NameOfSnake") + " The Snake.";
+        switch (Application.loadedLevel)
         {
             case 1:
                 {
@@ -229,8 +229,8 @@ public class PlayerController : MonoBehaviour {
                     break;
                 }
         }
-        
 
+       
     }
     private IEnumerator Pause()
     {

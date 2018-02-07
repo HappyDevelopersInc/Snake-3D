@@ -538,7 +538,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Rare         Skin
+  m_Text: 'Rare
+
+    Skin'
 --- !u!222 &605338057
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1216,7 +1218,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Epic         Skin
+  m_Text: 'Epic
+
+    Skin'
 --- !u!222 &806878922
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -8,10 +8,12 @@ public class ButtonManager : MonoBehaviour {
     public Text HighscoreText;
     public Button btnpause;
     bool pauseflag;
+    public Text SnakeName;
     void Start()
     {
         pauseflag = false;
         HighscoreText.text = "Highscore:" + PlayerPrefs.GetInt("Highscore");
+        SnakeName.text = PlayerPrefs.GetString("NameOfSnake") + " The Snake";
     }
     public void DevModeClicked()
     {

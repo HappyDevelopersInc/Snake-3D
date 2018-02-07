@@ -26,9 +26,9 @@ public class ClickObk : MonoBehaviour {
     {
        
         audio = GetComponent<AudioSource>();
-        audio.Pause();
-        gameObject.GetComponent<Renderer>().material.color = Color.red;
-        mute = true;
+        //audio.Pause();
+        gameObject.GetComponent<Renderer>().material.color = Color.green;
+        mute = false;
     }
     public void OnMouseDown()
     {
