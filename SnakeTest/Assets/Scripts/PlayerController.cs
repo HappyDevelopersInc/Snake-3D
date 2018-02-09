@@ -201,7 +201,7 @@ public class PlayerController : MonoBehaviour {
 
         //--------------------------
 
-        SnakeName.text = PlayerPrefs.GetString("NameOfSnake") + " The Snake.";
+        
         switch (Application.loadedLevel)
         {
             case 1:

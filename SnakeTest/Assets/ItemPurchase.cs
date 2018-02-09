@@ -3,13 +3,17 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class ItemPurchase : MonoBehaviour {
+
+    public GameObject[] obj;
     public static string ItemName;
     public Text ItemNameTXT;
     public Text ItemDescription;
     public Image ItemImage;
     public Sprite[] ItemSprite;
+   
 	// Use this for initialization
 	void Start () {
+        
         switch(ItemName)
         {
             case ("StandartSkin_15c"):
@@ -57,8 +61,27 @@ public class ItemPurchase : MonoBehaviour {
                 }
            
         }
+        ChangeColorOfObj(obj);
 	
 	}
+    void ChangeColorOfObj(GameObject[] obj)
+    {
+      
+        for (int i = 1; i < obj.Length; i++)
+        {
+            Renderer rend = obj[i].GetComponent<Renderer>();
+            rend.material.color = Color.red;
+        }
+    }
+    public void omefunction (Color c)
+    {
+        //do somthing
+        for (int i = 1; i < obj.Length; i++)
+        {
+            Renderer rend = obj[i].GetComponent<Renderer>();
+            rend.material.color =c;
+        }
+    }
 	
 	// Update is called once per frame
 	void Update () {

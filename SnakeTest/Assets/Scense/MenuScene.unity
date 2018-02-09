@@ -1581,6 +1581,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HighscoreText: {fileID: 0}
   btnpause: {fileID: 0}
+  SnakeName: {fileID: 0}
 --- !u!114 &892032595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2761,6 +2762,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HighscoreText: {fileID: 1376598760}
   btnpause: {fileID: 0}
+  SnakeName: {fileID: 650197043}
 --- !u!4 &1762913562
 Transform:
   m_ObjectHideFlags: 0
