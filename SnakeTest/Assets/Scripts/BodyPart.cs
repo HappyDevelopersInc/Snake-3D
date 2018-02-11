@@ -30,7 +30,10 @@ class BodyPart
     {
         be = BE;
     }
-    
+    public void Rotate()
+    {
+        be.transform.RotateAround(Vector3.down, 90f);
+    }
     public BodyPart(float counter)
     {
         

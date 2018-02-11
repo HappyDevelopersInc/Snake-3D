@@ -78,12 +78,17 @@ public class PlayerController : MonoBehaviour {
     private Vector3 offset;
     int cc = 0;
     public Camera mainCam;
-   // int generate = 0;
+    bool turnLeft = true;
+    bool turnRight = true;
+    bool turnUp = true;
+    bool turnDown = true;
+    // int generate = 0;
     public Text nextleveltxt;
     public Text highscoretext;
     public Text SnakeName;
     //---------------------------------------------
     public GameObject button_lvl1;
+    public static Color TailColor;
     public static AchivmentSys achivmentsystem;
     public static AchivmentsScores[] achivmentscores;
     public Texture Tex;
@@ -1102,11 +1107,11 @@ public class PlayerController : MonoBehaviour {
     //}
     void AddGameObject()
     {
-        
+        TailColor = new Color(PlayerPrefs.GetFloat("R"), PlayerPrefs.GetFloat("G"), PlayerPrefs.GetFloat("B"));//set the color of the snake tail to the his skin
         int count = 1;
         GameObject NewTail = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         Renderer rend = NewTail.GetComponent<Renderer>();
-        rend.material.color = Color.blue;
+        rend.material.color = TailColor;
         NewTail.transform.localScale -= new Vector3(0.5f, 0.5f, 0.5f);
         SphereCollider TailColider = (SphereCollider)NewTail.gameObject.AddComponent(typeof(SphereCollider));
         TailColider.center = Vector3.zero;
@@ -1151,6 +1156,7 @@ public class PlayerController : MonoBehaviour {
                 {
                     temp.GetInfo().SetXY(pos.GetInfo().GetX() - 0.501f, pos.GetInfo().GetY());
                     temp.GetInfo().SetMask(pos.GetInfo().GetMask());
+                    
                     break;
                 }
 
@@ -1171,7 +1177,7 @@ public class PlayerController : MonoBehaviour {
                 if (distance.x > 0)
                 {
                     Debug.Log("Right Swipe");
-                    key_pressed = "Right";
+                    key_pressed = "Right"; 
                 }
                 if (distance.x < 0)
                 {
@@ -1196,26 +1202,66 @@ public class PlayerController : MonoBehaviour {
     }
         void movement()//function that moves the obejct(Head of the snake)to the direction that the user will choose.
     {
+        Vector3 CurrentRotation = transform.eulerAngles;
         if (dead1 == false)
         {
             if (keyboard == true)
             {
-
+                
                 if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.LeftArrow))
                 {
                     key_pressed = "Left";
+                    turnRight = true;
+                    turnUp = true;
+                    turnDown = true;
+
+                    if (turnLeft == true)
+                    {
+                        transform.rotation = Quaternion.Euler(0, 148, 0);
+                    }
+                    turnLeft = false;
+
                 }
                 if (Input.GetKey(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.RightArrow))
                 {
                     key_pressed = "Right";
+                    turnLeft = true;
+                    turnUp = true;
+                    turnDown = true;
+
+                    if (turnRight == true)
+                    {
+                        transform.rotation = Quaternion.Euler(0, 320, 0);
+                    }
+                    turnRight = false;
                 }
                 if (Input.GetKey(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.UpArrow))
                 {
                     key_pressed = "Up";
+                    turnDown = true;
+                    turnLeft = true;
+                    turnRight = true;
+
+                    if (turnUp == true)
+                    {
+                        transform.rotation = Quaternion.Euler(0, 230, 0);
+                    }
+                    turnUp = false;
+
                 }
                 if (Input.GetKey(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.DownArrow))
                 {
                     key_pressed = "Down";
+                    turnLeft = true;
+                    turnRight = true;
+                    turnUp = true;
+
+                    if (turnDown == true)
+                    {
+                        transform.rotation = Quaternion.Euler(0, 50, 0);
+                    }
+                    turnDown = false;
+                   
 
                 }
             }
