@@ -23,19 +23,40 @@ public class Item : MonoBehaviour {
         {
             case ("StandartSkin_15c"):
                 {
-                     BuySkin(15);
+                     BuySkin(15, this.ItemName);
+                    break;
+                }
+            case ("RareSkin_25c"):
+                {
+                    BuySkin(25, this.ItemName);
+                    break;
+                }
+            case ("EpicSkin_40c"):
+                {
+                    BuySkin(40, this.ItemName);
                     break;
                 }
         }
     }
 
-    void BuySkin(int CreditsAmount)
+    void BuySkin(int CreditsAmount,string ItemName)
     {
         CreditBalance = PlayerPrefs.GetInt("Credits", 0);
-        PlayerPrefs.SetInt("Credits", (CreditBalance - CreditsAmount));
-        PlayerPrefs.SetFloat("R", ItemPurchase.color.r);
-        PlayerPrefs.SetFloat("G", ItemPurchase.color.g);
-        PlayerPrefs.SetFloat("B", ItemPurchase.color.b);
+        
+        if (CreditBalance>= CreditsAmount)
+        {
+            PlayerPrefs.SetString("SnakeSkin", ItemName);
+            PlayerPrefs.SetInt("Credits", (CreditBalance - CreditsAmount));
+            PlayerPrefs.SetFloat("R", ItemPurchase.color.r);
+            PlayerPrefs.SetFloat("G", ItemPurchase.color.g);
+            PlayerPrefs.SetFloat("B", ItemPurchase.color.b);
+        }
+        else
+        {
+            Debug.Log("You don't have enougth money to buy " + ItemName);
+        }
+        
+    
     }
     //Gets
     public string GetItemName()

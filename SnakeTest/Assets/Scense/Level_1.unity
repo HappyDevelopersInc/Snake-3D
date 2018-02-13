@@ -929,7 +929,9 @@ MonoBehaviour:
   highscoretext: {fileID: 0}
   SnakeName: {fileID: 0}
   button_lvl1: {fileID: 0}
-  Tex: {fileID: 2800000, guid: a5399fbc4ac0f854c928876df0a39817, type: 3}
+  StandardSkinTex: {fileID: 2800000, guid: 62d84273907c4304d9e75fc3ec640812, type: 3}
+  RareSkinTex: {fileID: 2800000, guid: 0f619ce1e09bedd46997904ac7145b13, type: 3}
+  EpicSkinTex: {fileID: 2800000, guid: 092eed5fb09120945b186c4b1dd5f3c9, type: 3}
   check: 0
   slider: {fileID: 0}
 --- !u!23 &749831509

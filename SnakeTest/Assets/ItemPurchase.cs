@@ -5,7 +5,10 @@ using UnityEngine.EventSystems;
 
 public class ItemPurchase : MonoBehaviour {
     
-    public GameObject[] obj;
+    GameObject[] obj;
+    public GameObject[] StandardSkinNode;
+    public GameObject[] RareSkinNode;
+    public GameObject[] EpicSkinNode;
     public static string ItemName;
     public Text ItemNameTXT;
     public Text ItemDescription;
@@ -14,44 +17,58 @@ public class ItemPurchase : MonoBehaviour {
     public Image ItemImage;
     public Sprite[] ItemSprite;
     public static Color color;
-    public Item item;
+    public static Item item;
     public string hex;
     float R, G, B;
     public string tempgo;
     //------------------------GAMEOBJECTS----
     public GameObject StandardSkin;
+    public GameObject RareSkin;
+    public GameObject EpicSkin;
     
     
 	// Use this for initialization
 	void Start () {
         StandardSkin.SetActive(false);
+        RareSkin.SetActive(false);
+        EpicSkin.SetActive(false);
         hex = "1";
         tempgo = PlayerPrefs.GetString("checkcolor","");
+       
+
         switch(ItemName)
         {
             case ("StandartSkin_15c"):
                 {
+                    obj = StandardSkinNode;
                     StandardSkin.SetActive(true);
                     item = new Item(ItemName, 15);
                     ItemNameTXT.text = "Standtard Skin";
                     ItemImage.sprite = ItemSprite[0];
                     CostAmount.text = ""+item.GetItemWorthCredits();
+                   
                     break;
                 }
             case ("RareSkin_25c"):
                 {
+                    obj = RareSkinNode;
+                    RareSkin.SetActive(true);
                     item = new Item(ItemName, 25);
                     ItemNameTXT.text = "Rare Skin";
                     ItemImage.sprite = ItemSprite[1];
                     CostAmount.text = "" + item.GetItemWorthCredits();
+                    
                     break;
                 }
             case ("EpicSkin_40c"):
                 {
+                    obj = EpicSkinNode;
+                    EpicSkin.SetActive(true);
                     item = new Item(ItemName, 40);
                     ItemNameTXT.text = "Epic Skin";
                     ItemImage.sprite = ItemSprite[2];
                     CostAmount.text = "" + item.GetItemWorthCredits();
+                  
                     break;
                 }
             case ("Another_Live_10c"):
@@ -87,6 +104,8 @@ public class ItemPurchase : MonoBehaviour {
                     CostAmount.text = "" + item.GetItemWorthCredits();
                     break;
                 }
+           
+
            
         }
         ChangeColorOfObj(obj);

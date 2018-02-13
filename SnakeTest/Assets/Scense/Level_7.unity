@@ -880,7 +880,6 @@ Prefab:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 840e33094aee06042b674fd33c073f04, type: 2}
-  m_RootGameObject: {fileID: 2090259590}
   m_IsPrefabParent: 0
 --- !u!1 &1170743562
 GameObject:
@@ -1562,6 +1561,7 @@ MonoBehaviour:
   mainCam: {fileID: 2027059944}
   nextleveltxt: {fileID: 2119825811}
   highscoretext: {fileID: 0}
+  SnakeName: {fileID: 0}
   button_lvl1: {fileID: 0}
   Tex: {fileID: 0}
   check: 0
@@ -1617,10 +1617,10 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1758049544}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: -0.00000016292068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4

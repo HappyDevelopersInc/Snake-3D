@@ -91,7 +91,10 @@ public class PlayerController : MonoBehaviour {
     public static Color TailColor;
     public static AchivmentSys achivmentsystem;
     public static AchivmentsScores[] achivmentscores;
-    public Texture Tex;
+    Texture Tex;
+    public Texture StandardSkinTex;
+    public Texture RareSkinTex;
+    public Texture EpicSkinTex;
     public int check;
     public Slider slider;
     public static int Credits;
@@ -105,7 +108,7 @@ public class PlayerController : MonoBehaviour {
         achivmentsystem.InitiateAchivments();
         achivmentscores = achivmentsystem.getachivments();
         Credits = PlayerPrefs.GetInt("Credits",0);
-        
+        PlayerPrefs.GetString("SnakeSkin", "StandartSkin_15c");
         PlayerPrefs.SetString("ss", "thebbi");
         pauseflag = false;
         appleeat = GetComponent<AudioSource>();
@@ -183,7 +186,7 @@ public class PlayerController : MonoBehaviour {
             nextleveltxt.text = "All Levels are Unlocked\nYou can buy the secret level!";
         else
             nextleveltxt.text = "Total Score left to next level : " + PlayerPrefs.GetInt("levelscore");
-
+       
         Score = 0;
         check = 0;
         dead1 = false;
@@ -1111,6 +1114,7 @@ public class PlayerController : MonoBehaviour {
         int count = 1;
         GameObject NewTail = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         Renderer rend = NewTail.GetComponent<Renderer>();
+        Renderer rendHead = FirstBP.GetComponent<Renderer>(); 
         rend.material.color = TailColor;
         NewTail.transform.localScale -= new Vector3(0.5f, 0.5f, 0.5f);
         SphereCollider TailColider = (SphereCollider)NewTail.gameObject.AddComponent(typeof(SphereCollider));
@@ -1119,7 +1123,34 @@ public class PlayerController : MonoBehaviour {
         Node<BodyPart> temp;
         BodyPart newbd = new BodyPart(0.0f,0.0f,NewTail,counter);
         temp = new Node<BodyPart>(newbd);
+       
 
+        switch (PlayerPrefs.GetString("SnakeSkin"))
+        {
+            case ("StandartSkin_15c"):
+                {
+                    Tex = StandardSkinTex;
+                    break;
+                }
+            case ("RareSkin_25c"):
+                {
+                    Tex = RareSkinTex;
+                    break;
+                }
+            case ("EpicSkin_40c"):
+                {
+                    Tex = EpicSkinTex;
+                    break;
+                }
+            default:
+                {
+                    Tex = StandardSkinTex;
+                    PlayerPrefs.SetString("SnakeSkin", "StandardSkin");
+                    break;
+                }
+
+        }
+        rendHead.material.mainTexture = Tex;
         Node<BodyPart> pos = Head;
         while (pos.GetNext() != null)
         {

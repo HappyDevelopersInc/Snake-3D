@@ -30,10 +30,10 @@ class BodyPart
     {
         be = BE;
     }
-    public void Rotate()
-    {
-        be.transform.RotateAround(Vector3.down, 90f);
-    }
+    //public void Rotate()
+    //{
+    //    be.transform.rotation = Quaternion.Euler(0, 90f, 0);
+    //}
     public BodyPart(float counter)
     {
         
