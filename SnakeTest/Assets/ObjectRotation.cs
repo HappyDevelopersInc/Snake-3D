@@ -17,7 +17,9 @@ public class ObjectRotation : MonoBehaviour {
         //newobject.Rotate(new Vector3(0, 1, speed * Time.deltaTime) );
         //newobject.Rotate(Vector3.up, speed * Time.deltaTime,Space.Self);
         //newobject.RotateAround(newobject.position, newobject.up, speed * Time.deltaTime );
-        transform.Rotate(0, speed * Time.deltaTime, 0, Space.Self);
+        //transform.Rotate(0, speed * Time.deltaTime, 0, Space.Self);
+        transform.Rotate(Vector3.up * Time.deltaTime*speed);
+        //transform.Rotate(0f, speed* Time.deltaTime, 0f, Space relativeTo = Space.Self);
         //newobject.RotateAround(newobject.position, Vector3.up, Time.deltaTime * 90f);
 
     }

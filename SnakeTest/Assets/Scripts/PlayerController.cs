@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System;
 using UnityEngine.SceneManagement;
-
-
+using System.Collections.Generic;
+using TMPro;
 public class PlayerController : MonoBehaviour {
-    
+    public Text LivesText;
     public static int animation;
     public AudioClip audioclipeat;
     public AudioClip audioclip;
@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour {
     public byte tempmask;
     int rank = 1;
     int tempscore;
+    public static int tempcounttail = 3;
     public static int Level3score = 250;
     public static int Score;
     public int countlevel = 0;
@@ -86,6 +87,7 @@ public class PlayerController : MonoBehaviour {
     public Text nextleveltxt;
     public Text highscoretext;
     public Text SnakeName;
+    public GameObject Panel;
     //---------------------------------------------
     public GameObject button_lvl1;
     public static Color TailColor;
@@ -99,17 +101,57 @@ public class PlayerController : MonoBehaviour {
     public Slider slider;
     public static int Credits;
     public static System.Collections.Generic.List<string> AchivmentsUnlocked;
-    
+    ItemPurchase itempurchase;
+    public Texture PassTexture;
+    public int Live;
+    public int counttail;
+    public Texture RareSkinTexture1;
+    public Texture RareSkinTexture2;
+    public Texture RareSkinTexture3;
+    public Texture RareSkinTexture4;
+    public Texture RareSkinTexture5;
+    public Texture RareSkinTexture6;
+    public Texture RareSkinTexture7;
+    public Texture RareSkinTexture8;
+    public Texture RareSkinTexture9;
+    public Texture RareSkinTexture10;
+    public Texture RareSkinTexture11;
+    public Texture RareSkinTexture12;
+    //-----EpicSkinTextures----------
+    public Texture EpicSkinTexture;
+    public Texture EpicSkinTexture1;
+    public Texture EpicSkinTexture2;
+    public Texture EpicSkinTexture3;
+    public Texture EpicSkinTexture4;
+    public Texture EpicSkinTexture5;
+    public Texture EpicSkinTexture6;
+    public Texture EpicSkinTexture7;
+    public Texture EpicSkinTexture8;
+    public Texture EpicSkinTexture9;
+    public Texture EpicSkinTexture10;
+    public Texture EpicSkinTexture11;
+    public Texture EpicSkinTexture12;
+    public Texture EpicSkinTexture13;
+    public Texture EpicSkinTexture14;
+    public Texture EpicSkinTexture15;
+    public Texture EpicSkinTexture16;
+    int scoretemp;
+    int anothergame;
     // Use this for initialization
     void Start() {
         
+        //counttail = 3;
+        //Live = PlayerPrefs.GetInt("Live", 0);
         animation = 0;
         achivmentsystem = new AchivmentSys();
         achivmentsystem.InitiateAchivments();
         achivmentscores = achivmentsystem.getachivments();
-        Credits = PlayerPrefs.GetInt("Credits",0);
+        Credits = PlayerPrefs.GetInt("Credits", 0);
         PlayerPrefs.GetString("SnakeSkin", "StandartSkin_15c");
         PlayerPrefs.SetString("ss", "thebbi");
+        scoretemp =PlayerPrefs.GetInt("TempScore", 0);
+        counttail=PlayerPrefs.GetInt("CountTail", 3);
+        anothergame = PlayerPrefs.GetInt("AnotherGame", 0);
         pauseflag = false;
         appleeat = GetComponent<AudioSource>();
         appleburp= GetComponent<AudioSource>(); 
@@ -194,13 +236,24 @@ public class PlayerController : MonoBehaviour {
         Apple.ground2 = GameObject.Find("Ground2");
         Apple.RandomApple();
         GameOverText.text = "";
-        ScoreText.text = "Score : " + Score;
+         ScoreText.text = "Score : " + Score;
         CreditText.text = "Credits " + Credits;
-        
+
 
         //----------------------
-        for (int i =0;i<3;i++)
-        AddGameObject();
+        Head.GetInfo().SetXY(0.29f,-0.34f);
+        if (PlayerPrefs.GetInt("AnotherGame") == 0)
+        {
+            PlayerPrefs.SetInt("TempScore", 0);
+            for (int i = 0; i < 3; i++)
+                AddGameObject();
+        }
+        else
+        {
+            Score = PlayerPrefs.GetInt("TempScore");
+            for (int i = 0; i < PlayerPrefs.GetInt("CountTail"); i++)
+                AddGameObject();
+        }
         
         //----------------------
         StartCoroutine(wait());
@@ -381,8 +434,8 @@ public class PlayerController : MonoBehaviour {
    
         IEnumerator LeaderBoardTime()
     {
-        
-        float fadeTime = GameObject.Find("Head").GetComponent<FadeScene>().BeginFade(1);
+
+        float fadeTime = GameObject.FindWithTag("Head").GetComponent<FadeScene>().BeginFade(1);
         yield return new WaitForSeconds(fadeTime);
         
         SceneManager.LoadScene("ScoreScene");
@@ -525,23 +578,50 @@ public class PlayerController : MonoBehaviour {
             x += 0.2f;
         }
     }
+    public void startgameoverscene()
+    {
+        PlayerPrefs.SetInt("CountTail", 3);
+        PlayerPrefs.SetInt("AnotherGame", 0);
+        StartCoroutine(LeaderBoardTime());
+    }
+    public void startanotherlivescene(string sceneName)
+    {
+        if (PlayerPrefs.GetInt("Live") > 0)
+        {
+            PlayerPrefs.SetInt("Live", PlayerPrefs.GetInt("Live") - 1);
+            PlayerPrefs.SetInt("AnotherGame", 1);
+            SceneManager.LoadScene(sceneName);
+        }
+        else
+        {
+            
+            Debug.Log("You Dont have any Lives , Go to the store and purchase 'Another Live'");
+        }
+    }
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Wall") || other.gameObject.CompareTag("Enemy") || other.gameObject.CompareTag("Tail"))
         {
+            counttail = 3;
             dead1 = true;
+            Panel.SetActive(true);
+            LivesText.text = "Lives : " + PlayerPrefs.GetInt("Live");
             Time.timeScale = 0;
             //AchivmentsUnlocked = achivmentsystem.IfAchived();
-            StartCoroutine(LeaderBoardTime());
-            
+            //startgameoverscene();
+           
             tempscore +=Score;
-
+         
             Node<BodyPart> tmp = Head;
+            
             while (tmp != null)
             {
+                
                 tmp.GetInfo().SetMask(0);
                 tmp = tmp.GetNext();
+                
             }
+            
             Time.timeScale = 1;
             achivmentsystem.IfAchived();
             achivmentscores = achivmentsystem.getachivments();
@@ -558,8 +638,11 @@ public class PlayerController : MonoBehaviour {
     }
     void EngageApple(string appletag, Collider other,int appletype)
     {
+
         if (other.gameObject.CompareTag(appletag))
         {
+            counttail++;
+            PlayerPrefs.SetInt("CountTail", counttail);
             if (ClickObk.mute == false)
             {
                 if (appletag != "RedApple")
@@ -578,6 +661,7 @@ public class PlayerController : MonoBehaviour {
             other.gameObject.tag = "non";//beacuse the function enters twice on the same object,the object does not have enougth time to disapeare.
             Destroy(other.gameObject);
             Score += appletype;
+            PlayerPrefs.SetInt("TempScore", Score);
             Apple.generate++;
             Apple.RandomApple();
             AddGameObject();
@@ -1108,6 +1192,159 @@ public class PlayerController : MonoBehaviour {
     //    }
         
     //}
+    public Texture SortTexture(string TextureName)
+    {
+        switch (TextureName)
+        {
+            case ("RareSkinTexture1"):
+                {
+                    PassTexture = RareSkinTexture1;
+                    return RareSkinTexture1;
+                }
+            case ("RareSkinTexture2"):
+                {
+                    PassTexture = RareSkinTexture2;
+                    return RareSkinTexture2;
+                }
+            case ("RareSkinTexture3"):
+                {
+                    PassTexture = RareSkinTexture3;
+                    return RareSkinTexture3;
+                }
+            case ("RareSkinTexture4"):
+                {
+                    PassTexture = RareSkinTexture4;
+                    return RareSkinTexture4;
+                }
+            case ("RareSkinTexture5"):
+                {
+                    PassTexture = RareSkinTexture5;
+                    return RareSkinTexture5;
+                }
+            case ("RareSkinTexture6"):
+                {
+                    PassTexture = RareSkinTexture6;
+                    return RareSkinTexture6;
+                }
+            case ("RareSkinTexture7"):
+                {
+                    PassTexture = RareSkinTexture7;
+                    return RareSkinTexture7;
+                }
+            case ("RareSkinTexture8"):
+                {
+                    PassTexture = RareSkinTexture8;
+                    return RareSkinTexture8;
+                }
+            case ("RareSkinTexture9"):
+                {
+                    PassTexture = RareSkinTexture9;
+                    return RareSkinTexture9;
+                }
+            case ("RareSkinTexture10"):
+                {
+                    PassTexture = RareSkinTexture10;
+                    return RareSkinTexture10;
+                }
+            case ("RareSkinTexture11"):
+                {
+                    PassTexture = RareSkinTexture11;
+                    return RareSkinTexture11;
+                }
+            case ("RareSkinTexture12"):
+                {
+                    PassTexture = RareSkinTexture12;
+                    return RareSkinTexture12;
+                }
+            case ("EpicSkinTexture"):
+                {
+                    PassTexture = EpicSkinTexture;
+                    return EpicSkinTexture;
+                }
+            case ("EpicSkinTexture1"):
+                {
+                    PassTexture = EpicSkinTexture1;
+                    return EpicSkinTexture1;
+                }
+            case ("EpicSkinTexture2"):
+                {
+                    PassTexture = EpicSkinTexture2;
+                    return EpicSkinTexture2;
+                }
+            case ("EpicSkinTexture3"):
+                {
+                    PassTexture = EpicSkinTexture3;
+                    return EpicSkinTexture3;
+                }
+            case ("EpicSkinTexture4"):
+                {
+                    PassTexture = EpicSkinTexture4;
+                    return EpicSkinTexture4;
+                }
+            case ("EpicSkinTexture5"):
+                {
+                    PassTexture = EpicSkinTexture5;
+                    return EpicSkinTexture5;
+                }
+            case ("EpicSkinTexture6"):
+                {
+                    PassTexture = EpicSkinTexture6;
+                    return EpicSkinTexture6;
+                }
+            case ("EpicSkinTexture7"):
+                {
+                    PassTexture = EpicSkinTexture7;
+                    return EpicSkinTexture7;
+                }
+            case ("EpicSkinTexture8"):
+                {
+                    PassTexture = EpicSkinTexture8;
+                    return EpicSkinTexture8;
+                }
+            case ("EpicSkinTexture9"):
+                {
+                    PassTexture = EpicSkinTexture9;
+                    return EpicSkinTexture9;
+                }
+            case ("EpicSkinTexture10"):
+                {
+                    PassTexture = EpicSkinTexture10;
+                    return EpicSkinTexture10;
+                }
+            case ("EpicSkinTexture11"):
+                {
+                    PassTexture = EpicSkinTexture11;
+                    return EpicSkinTexture11;
+                }
+            case ("EpicSkinTexture12"):
+                {
+                    PassTexture = EpicSkinTexture12;
+                    return EpicSkinTexture12;
+                }
+            case ("EpicSkinTexture13"):
+                {
+                    PassTexture = EpicSkinTexture13;
+                    return EpicSkinTexture13;
+                }
+            case ("EpicSkinTexture14"):
+                {
+                    PassTexture = EpicSkinTexture14;
+                    return EpicSkinTexture14;
+                }
+            case ("EpicSkinTexture15"):
+                {
+                    PassTexture = EpicSkinTexture15;
+                    return EpicSkinTexture15;
+                }
+            case ("EpicSkinTexture16"):
+                {
+                    PassTexture = EpicSkinTexture16;
+                    return EpicSkinTexture16;
+                }
+
+            default:return null;
+        }
+    }
     void AddGameObject()
     {
         TailColor = new Color(PlayerPrefs.GetFloat("R"), PlayerPrefs.GetFloat("G"), PlayerPrefs.GetFloat("B"));//set the color of the snake tail to the his skin
@@ -1115,15 +1352,24 @@ public class PlayerController : MonoBehaviour {
         GameObject NewTail = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         Renderer rend = NewTail.GetComponent<Renderer>();
         Renderer rendHead = FirstBP.GetComponent<Renderer>(); 
-        rend.material.color = TailColor;
+        if(PlayerPrefs.GetString("Texture")!="")
+        {
+            //rend.material.mainTexture = ItemPurchase.GetTexture();
+            SortTexture(PlayerPrefs.GetString("Texture"));
+            rend.material.mainTexture = PassTexture;
+            //rend.material.mainTexture = itempurchase.GetTexture();
+             
+        }
+        else
+            rend.material.color = TailColor;
         NewTail.transform.localScale -= new Vector3(0.5f, 0.5f, 0.5f);
         SphereCollider TailColider = (SphereCollider)NewTail.gameObject.AddComponent(typeof(SphereCollider));
         TailColider.center = Vector3.zero;
         //-----End of creating new gameobject for tail.
         Node<BodyPart> temp;
-        BodyPart newbd = new BodyPart(0.0f,0.0f,NewTail,counter);
+        BodyPart newbd = new BodyPart(Head.GetInfo().GetX(),Head.GetInfo().GetY(),NewTail,counter);
         temp = new Node<BodyPart>(newbd);
-       
+        
 
         switch (PlayerPrefs.GetString("SnakeSkin"))
         {
@@ -1157,9 +1403,19 @@ public class PlayerController : MonoBehaviour {
             count++;
             pos = pos.GetNext();
         }
-        if(count>3)
+        if (PlayerPrefs.GetInt("AnotherGame") == 0)
         {
-            NewTail.tag = "Tail";
+            if (count > 3)
+            {
+                NewTail.tag = "Tail";
+            }
+        }
+        else
+        {
+            if (count > PlayerPrefs.GetInt("CountTail"))
+            {
+                NewTail.tag = "Tail";
+            }
         }
         switch (pos.GetInfo().GetMask())
         {

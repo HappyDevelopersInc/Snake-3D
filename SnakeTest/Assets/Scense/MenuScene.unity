@@ -2643,9 +2643,41 @@ MonoBehaviour:
   highscoretext: {fileID: 0}
   SnakeName: {fileID: 650197043}
   button_lvl1: {fileID: 0}
-  Tex: {fileID: 0}
+  StandardSkinTex: {fileID: 0}
+  RareSkinTex: {fileID: 0}
+  EpicSkinTex: {fileID: 0}
   check: 0
   slider: {fileID: 15412868}
+  PassTexture: {fileID: 0}
+  RareSkinTexture1: {fileID: 0}
+  RareSkinTexture2: {fileID: 0}
+  RareSkinTexture3: {fileID: 0}
+  RareSkinTexture4: {fileID: 0}
+  RareSkinTexture5: {fileID: 0}
+  RareSkinTexture6: {fileID: 0}
+  RareSkinTexture7: {fileID: 0}
+  RareSkinTexture8: {fileID: 0}
+  RareSkinTexture9: {fileID: 0}
+  RareSkinTexture10: {fileID: 0}
+  RareSkinTexture11: {fileID: 0}
+  RareSkinTexture12: {fileID: 0}
+  EpicSkinTexture: {fileID: 0}
+  EpicSkinTexture1: {fileID: 0}
+  EpicSkinTexture2: {fileID: 0}
+  EpicSkinTexture3: {fileID: 0}
+  EpicSkinTexture4: {fileID: 0}
+  EpicSkinTexture5: {fileID: 0}
+  EpicSkinTexture6: {fileID: 0}
+  EpicSkinTexture7: {fileID: 0}
+  EpicSkinTexture8: {fileID: 0}
+  EpicSkinTexture9: {fileID: 0}
+  EpicSkinTexture10: {fileID: 0}
+  EpicSkinTexture11: {fileID: 0}
+  EpicSkinTexture12: {fileID: 0}
+  EpicSkinTexture13: {fileID: 0}
+  EpicSkinTexture14: {fileID: 0}
+  EpicSkinTexture15: {fileID: 0}
+  EpicSkinTexture16: {fileID: 0}
 --- !u!4 &1621857123
 Transform:
   m_ObjectHideFlags: 0
