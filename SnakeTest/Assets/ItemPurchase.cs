@@ -10,7 +10,9 @@ public class ItemPurchase : MonoBehaviour {
     public GameObject[] RareSkinNode;
     public GameObject[] EpicSkinNode;
     public static string ItemName;
+    public Text ApplesOneSwallowTXT;
     public Text ItemNameTXT;
+    public Text SmallCreatureTXT;
     public Text ItemDescription;
     public Text CreditNumber;
     public Text CostAmount;
@@ -24,6 +26,7 @@ public class ItemPurchase : MonoBehaviour {
     public string tempgo;
     string texture;
     int live;
+    int apples;
     public Text AnotherLives;
     public static Texture PassTexture;
     //------------------------GAMEOBJECTS----
@@ -37,6 +40,11 @@ public class ItemPurchase : MonoBehaviour {
     public GameObject BuyPanel;
     public GameObject AnotherLive;
     public GameObject Arrows;
+    public GameObject SmallCreature;
+    public GameObject SmallCreatureSpin;
+    public GameObject ApplesOneSwallowSpin;
+    public GameObject ApplesOneSwallowText;
+    public GameObject Credit3D;
     //------RareSkinTextures---------
     public Texture RareSkinTexture1;
     public Texture RareSkinTexture2;
@@ -83,11 +91,16 @@ public class ItemPurchase : MonoBehaviour {
         AnotherLive.SetActive(false);
         BuyPanel.SetActive(false);
         Arrows.SetActive(true);
+        SmallCreature.SetActive(false);
+        SmallCreatureSpin.SetActive(false);
+        ApplesOneSwallowSpin.SetActive(false);
+        ApplesOneSwallowText.SetActive(false);
+        Credit3D.SetActive(false);
         hex = "1";
         PassTexture = SortTexture(PlayerPrefs.GetString("Texture"));
         tempgo = PlayerPrefs.GetString("checkcolor","");
         live = PlayerPrefs.GetInt("Live", 0);
-      
+        apples = PlayerPrefs.GetInt("2ApplesOneSwallow", 0);
          texture = PlayerPrefs.GetString("Texture", "");
         switch (ItemName)
         {
@@ -144,6 +157,8 @@ public class ItemPurchase : MonoBehaviour {
                 }
             case ("Small_Creature_15c"):
                 {
+                    SmallCreatureSpin.SetActive(true);
+                    SmallCreature.SetActive(true);
                     item = new Item(ItemName, 15);
                     ItemNameTXT.text = "Small Creature";
                     ItemImage.sprite = ItemSprite[4];
@@ -152,6 +167,8 @@ public class ItemPurchase : MonoBehaviour {
                 }
             case ("2Apples_OneSwallow_15c"):
                 {
+                    ApplesOneSwallowSpin.SetActive(true);
+                    ApplesOneSwallowText.SetActive(true);
                     item = new Item(ItemName, 15);
                     ItemNameTXT.text = "2 Apples One Swallow";
                     ItemImage.sprite = ItemSprite[5];
@@ -161,6 +178,7 @@ public class ItemPurchase : MonoBehaviour {
                 }
             case ("Purchase_Credits"):
                 {
+                    Credit3D.SetActive(true);
                     item = new Item(ItemName);
                     ItemNameTXT.text = "Purchase Credits";
                     ItemImage.sprite = ItemSprite[6];
@@ -495,6 +513,16 @@ public class ItemPurchase : MonoBehaviour {
             if (item.Purchase())
                 ClosePanel();
         }
+        else if(ItemName == "Small_Creature_15c")
+        {
+            if (item.Purchase())
+                ClosePanel();
+        }
+        else if (ItemName == "2Apples_OneSwallow_15c")
+        {
+            if (item.Purchase())
+                ClosePanel();
+        }
     }
     public static Color hexToColor(string hex)
     {
@@ -526,7 +554,9 @@ public class ItemPurchase : MonoBehaviour {
     // Update is called once per frame
     void Update () {
         CreditNumber.text =""+ PlayerPrefs.GetInt("Credits");
-
-        AnotherLives.text = "Another Lives :" + PlayerPrefs.GetInt("Live");
+        
+        AnotherLives.text = "Extra Lives :" + PlayerPrefs.GetInt("Live");
+        SmallCreatureTXT.text = "Small Creatures :" + PlayerPrefs.GetInt("SmallCreature");
+        ApplesOneSwallowTXT.text = "2 Apples One Swallow :" + PlayerPrefs.GetInt("2ApplesOneSwallow");
 	}
 }

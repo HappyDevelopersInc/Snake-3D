@@ -105,6 +105,7 @@ public class PlayerController : MonoBehaviour {
     public Texture PassTexture;
     public int Live;
     public int counttail;
+    int doublescore;
     public Texture RareSkinTexture1;
     public Texture RareSkinTexture2;
     public Texture RareSkinTexture3;
@@ -137,6 +138,7 @@ public class PlayerController : MonoBehaviour {
     public Texture EpicSkinTexture16;
     int scoretemp;
     int anothergame;
+    public static float Size;
     // Use this for initialization
     void Start() {
         
@@ -146,6 +148,7 @@ public class PlayerController : MonoBehaviour {
         achivmentsystem = new AchivmentSys();
         achivmentsystem.InitiateAchivments();
         achivmentscores = achivmentsystem.getachivments();
+        doublescore = PlayerPrefs.GetInt("doublescore",1);
         Credits = PlayerPrefs.GetInt("Credits", 0);
         PlayerPrefs.GetString("SnakeSkin", "StandartSkin_15c");
         PlayerPrefs.SetString("ss", "thebbi");
@@ -234,13 +237,15 @@ public class PlayerController : MonoBehaviour {
         dead1 = false;
         Apple.ground = GameObject.Find("Ground");
         Apple.ground2 = GameObject.Find("Ground2");
-        Apple.RandomApple();
+        
         GameOverText.text = "";
          ScoreText.text = "Score : " + Score;
         CreditText.text = "Credits " + Credits;
 
-
+        
         //----------------------
+        if(Size==0.65f)
+            Head.GetInfo().SetScale(Size-0.5f);
         Head.GetInfo().SetXY(0.29f,-0.34f);
         if (PlayerPrefs.GetInt("AnotherGame") == 0)
         {
@@ -394,6 +399,30 @@ public class PlayerController : MonoBehaviour {
                 }
         }
     }
+    
+    IEnumerator Wait3sec(GameObject obj )
+    {
+        int innercount = 0;
+        Node<BodyPart> pos = Head;
+        while (pos.GetNext() != null)
+        {
+            innercount++;
+            pos = pos.GetNext();
+        }
+        if (Score >= 20 && Score<30 ||Score <20)
+            yield return new WaitForSeconds(3f);
+        else if (Score >= 30 && Score<40)
+            yield return new WaitForSeconds(4f);
+        else if (Score >= 40 && Score<50)
+            yield return new WaitForSeconds(5f);
+        else if (Score >= 50 && Score<60)
+            yield return new WaitForSeconds(6f);
+        else if (Score >= 60)
+            yield return new WaitForSeconds(7f);
+        
+        if(innercount>=3)
+            obj.tag = "Tail";
+    }
     IEnumerator wait()
     {
         keyboard = false;
@@ -416,7 +445,19 @@ public class PlayerController : MonoBehaviour {
 
         yield return new WaitForSeconds(0.5f);
         LevelText.text = "";
+       
+        if(Score>=20 && Score<30)
+            yield return new WaitForSeconds(2f);
+        else if(Score>=30 && Score < 40)
+            yield return new WaitForSeconds(3f);
+        else if (Score >= 40 && Score < 50)
+            yield return new WaitForSeconds(4f);
+        else if (Score >= 50 && Score < 60)
+            yield return new WaitForSeconds(5f);
+        else if (Score >= 60)
+            yield return new WaitForSeconds(6f);
 
+        Apple.RandomApple();
     }
     IEnumerator StartScene()
     {
@@ -580,6 +621,7 @@ public class PlayerController : MonoBehaviour {
     }
     public void startgameoverscene()
     {
+        PlayerPrefs.SetInt("doublescore", 1);
         PlayerPrefs.SetInt("CountTail", 3);
         PlayerPrefs.SetInt("AnotherGame", 0);
         StartCoroutine(LeaderBoardTime());
@@ -602,6 +644,7 @@ public class PlayerController : MonoBehaviour {
     {
         if (other.gameObject.CompareTag("Wall") || other.gameObject.CompareTag("Enemy") || other.gameObject.CompareTag("Tail"))
         {
+            
             counttail = 3;
             dead1 = true;
             Panel.SetActive(true);
@@ -660,7 +703,7 @@ public class PlayerController : MonoBehaviour {
 
             other.gameObject.tag = "non";//beacuse the function enters twice on the same object,the object does not have enougth time to disapeare.
             Destroy(other.gameObject);
-            Score += appletype;
+            Score += (appletype * PlayerPrefs.GetInt("doublescore"));
             PlayerPrefs.SetInt("TempScore", Score);
             Apple.generate++;
             Apple.RandomApple();
@@ -671,7 +714,7 @@ public class PlayerController : MonoBehaviour {
             if (PlayerPrefs.GetInt("levelscore") > 0)
             {
 
-                PlayerPrefs.SetInt("levelscore", PlayerPrefs.GetInt("levelscore") - appletype);
+                PlayerPrefs.SetInt("levelscore", PlayerPrefs.GetInt("levelscore") - (appletype * PlayerPrefs.GetInt("doublescore")));
                 if (PlayerPrefs.GetInt("Totalscore") >= 1200 && PlayerPrefs.GetInt("checklvl3") == 4)
                     nextleveltxt.text = "All Levels are Unlocked\nWait For Final Release";
                 else
@@ -733,7 +776,7 @@ public class PlayerController : MonoBehaviour {
             }
              AchivmentsUnlocked = achivmentsystem.IfAchived();
 
-            PlayerPrefs.SetInt("Totalscore", PlayerPrefs.GetInt("Totalscore") + appletype);
+            PlayerPrefs.SetInt("Totalscore", PlayerPrefs.GetInt("Totalscore") + (appletype * PlayerPrefs.GetInt("doublescore")));
         }
         
 
@@ -1345,8 +1388,25 @@ public class PlayerController : MonoBehaviour {
             default:return null;
         }
     }
+    public static void SetScore2times()
+    {
+        PlayerPrefs.SetInt("doublescore", 2);
+    }
+    public static float SetSize(float size = 0.55f)
+    {
+        
+        Size = size;
+        return Size;
+
+    }
+    public float GetSize()
+    {
+       
+        return Size;
+    }
     void AddGameObject()
     {
+        float Size = GetSize();
         TailColor = new Color(PlayerPrefs.GetFloat("R"), PlayerPrefs.GetFloat("G"), PlayerPrefs.GetFloat("B"));//set the color of the snake tail to the his skin
         int count = 1;
         GameObject NewTail = GameObject.CreatePrimitive(PrimitiveType.Sphere);
@@ -1362,7 +1422,7 @@ public class PlayerController : MonoBehaviour {
         }
         else
             rend.material.color = TailColor;
-        NewTail.transform.localScale -= new Vector3(0.5f, 0.5f, 0.5f);
+        NewTail.transform.localScale -= new Vector3(Size, Size, Size);
         SphereCollider TailColider = (SphereCollider)NewTail.gameObject.AddComponent(typeof(SphereCollider));
         TailColider.center = Vector3.zero;
         //-----End of creating new gameobject for tail.
@@ -1417,6 +1477,8 @@ public class PlayerController : MonoBehaviour {
                 NewTail.tag = "Tail";
             }
         }
+        
+        
         switch (pos.GetInfo().GetMask())
         {
             case 2://last node is moving up
@@ -1450,9 +1512,9 @@ public class PlayerController : MonoBehaviour {
         }
         temp.GetInfo().SetMask(pos.GetInfo().GetMask());
         pos.SetNext(temp);
+        StartCoroutine(Wait3sec(NewTail));
 
-       
-  }
+    }
     void swipe()
     {
         if (keyboard == true)
