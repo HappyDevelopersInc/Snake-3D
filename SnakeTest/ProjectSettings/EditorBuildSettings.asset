@@ -7,37 +7,61 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/Scense/LoadingScene.unity
+    guid: 5156490e73a6af54dad8a03703de6380
   - enabled: 1
     path: Assets/Scense/MenuScene.unity
+    guid: 51fce761a62154d48a4f7f47d244c928
   - enabled: 1
     path: Assets/Scense/Level_1.unity
+    guid: 9bdf11dd9896288449b1e332496316ea
   - enabled: 1
     path: Assets/Scense/Level_2.unity
+    guid: eed4fbf864068244e83754443ecd4434
   - enabled: 1
     path: Assets/Scense/Level_3.unity
+    guid: a26cca5eae1c5cb449d35ac478dd0e50
   - enabled: 1
     path: Assets/Scense/Level_4.unity
+    guid: 99c1b5fc5f40a2947bd02871ba361758
   - enabled: 1
     path: Assets/Scense/Level_5.unity
+    guid: 5f4ef932bdee9e8438d20bee2c24d0de
   - enabled: 1
     path: Assets/Scense/Level_6.unity
+    guid: 073cdeb4d3384714ebac27983058992c
   - enabled: 1
     path: Assets/Scense/Level_7.unity
+    guid: 326ccb314d93c6747821f1ad3bc44e82
   - enabled: 1
     path: Assets/Scense/Level_8.unity
+    guid: d06212d9f4bbf5545a4f5cacd999fed7
   - enabled: 1
     path: Assets/Scense/Level_9.unity
+    guid: 963f0a72c89da6c489a95d2ce293a8d1
   - enabled: 1
     path: Assets/Scense/Level_10.unity
+    guid: 4ae1dd1c4bb785949ae33d0c7c732657
   - enabled: 1
     path: Assets/Scense/ScoreScene.unity
+    guid: 7561bd887a0583249b41ac7dcf04c9c5
   - enabled: 1
     path: Assets/Scense/Levels_Scene.unity
+    guid: 4431346afc3e0a347adf805855e7fe9d
   - enabled: 1
     path: Assets/Scense/HowToPlay_Scene.unity
+    guid: b2e487c48282f3341801c4612d7a4a50
   - enabled: 0
-    path: Assets/Scense/SettingsScene.unity
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Scense/Ahcivments_List.unity
+    guid: c32bca79fead5f141a972650fc655b86
   - enabled: 1
     path: Assets/Scense/NewStart.unity
+    guid: c4656471e5bfb9742be7fcaa802905d7
+  - enabled: 1
+    path: Assets/Scense/ShopScene1.unity
+    guid: a28ad8b0c7b81484aa76bcd9ab51acbd
+  - enabled: 1
+    path: Assets/Scense/ShopScene2.unity
+    guid: 55ed87b2e9c5a0c41a726a543f19fd52

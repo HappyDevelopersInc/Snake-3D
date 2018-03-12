@@ -30,7 +30,14 @@ class BodyPart
     {
         be = BE;
     }
-    
+    public void SetScale(float Scale)
+    {
+        be.transform.localScale -= new Vector3(Scale, Scale, Scale);
+    }
+    //public void Rotate()
+    //{
+    //    be.transform.rotation = Quaternion.Euler(0, 90f, 0);
+    //}
     public BodyPart(float counter)
     {
         

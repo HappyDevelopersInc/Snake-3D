@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System;
 using UnityEngine.SceneManagement;
-
-
+using System.Collections.Generic;
+using TMPro;
 public class PlayerController : MonoBehaviour {
-    
+    public Text LivesText;
     public static int animation;
     public AudioClip audioclipeat;
     public AudioClip audioclip;
@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour {
     public byte tempmask;
     int rank = 1;
     int tempscore;
+    public static int tempcounttail = 3;
     public static int Level3score = 250;
     public static int Score;
     public int countlevel = 0;
@@ -78,30 +79,83 @@ public class PlayerController : MonoBehaviour {
     private Vector3 offset;
     int cc = 0;
     public Camera mainCam;
-   // int generate = 0;
+    bool turnLeft = true;
+    bool turnRight = true;
+    bool turnUp = true;
+    bool turnDown = true;
+    // int generate = 0;
     public Text nextleveltxt;
     public Text highscoretext;
-    
+    public Text SnakeName;
+    public GameObject Panel;
+    public Button SpeedButton;
     //---------------------------------------------
     public GameObject button_lvl1;
+    public static Color TailColor;
     public static AchivmentSys achivmentsystem;
     public static AchivmentsScores[] achivmentscores;
-    public Texture Tex;
+    Texture Tex;
+    public Texture StandardSkinTex;
+    public Texture RareSkinTex;
+    public Texture EpicSkinTex;
     public int check;
     public Slider slider;
     public static int Credits;
     public static System.Collections.Generic.List<string> AchivmentsUnlocked;
-    
+    ItemPurchase itempurchase;
+    public Texture PassTexture;
+    public int Live;
+    public int counttail;
+    int doublescore;
+    public Texture RareSkinTexture1;
+    public Texture RareSkinTexture2;
+    public Texture RareSkinTexture3;
+    public Texture RareSkinTexture4;
+    public Texture RareSkinTexture5;
+    public Texture RareSkinTexture6;
+    public Texture RareSkinTexture7;
+    public Texture RareSkinTexture8;
+    public Texture RareSkinTexture9;
+    public Texture RareSkinTexture10;
+    public Texture RareSkinTexture11;
+    public Texture RareSkinTexture12;
+    //-----EpicSkinTextures----------
+    public Texture EpicSkinTexture;
+    public Texture EpicSkinTexture1;
+    public Texture EpicSkinTexture2;
+    public Texture EpicSkinTexture3;
+    public Texture EpicSkinTexture4;
+    public Texture EpicSkinTexture5;
+    public Texture EpicSkinTexture6;
+    public Texture EpicSkinTexture7;
+    public Texture EpicSkinTexture8;
+    public Texture EpicSkinTexture9;
+    public Texture EpicSkinTexture10;
+    public Texture EpicSkinTexture11;
+    public Texture EpicSkinTexture12;
+    public Texture EpicSkinTexture13;
+    public Texture EpicSkinTexture14;
+    public Texture EpicSkinTexture15;
+    public Texture EpicSkinTexture16;
+    int scoretemp;
+    int anothergame;
+    public static float Size;
     // Use this for initialization
     void Start() {
         
+        //counttail = 3;
+        //Live = PlayerPrefs.GetInt("Live", 0);
         animation = 0;
         achivmentsystem = new AchivmentSys();
         achivmentsystem.InitiateAchivments();
         achivmentscores = achivmentsystem.getachivments();
-        Credits = PlayerPrefs.GetInt("Credits",0);
-        
+        doublescore = PlayerPrefs.GetInt("doublescore",1);
+        Credits = PlayerPrefs.GetInt("Credits", 0);
+        PlayerPrefs.GetString("SnakeSkin", "StandartSkin_15c");
         PlayerPrefs.SetString("ss", "thebbi");
+        scoretemp =PlayerPrefs.GetInt("TempScore", 0);
+        counttail=PlayerPrefs.GetInt("CountTail", 3);
+        anothergame = PlayerPrefs.GetInt("AnotherGame", 0);
         pauseflag = false;
         appleeat = GetComponent<AudioSource>();
         appleburp= GetComponent<AudioSource>(); 
@@ -122,8 +176,8 @@ public class PlayerController : MonoBehaviour {
             PlayerPrefs.SetInt("rank", 1);
         if (PlayerPrefs.GetInt("LVL_ACCESS")==0)
             PlayerPrefs.SetInt("LVL_ACCESS", 1);
-        if (PlayerPrefs.GetInt("Highscore") == 0)
-            PlayerPrefs.SetInt("Highscore", 0);
+        if (PlayerPrefs.GetInt("highscorenew") == 0)
+            PlayerPrefs.SetInt("highscorenew", 0);
         if (PlayerPrefs.GetInt("Totalscore") == 0)
             PlayerPrefs.SetInt("Totalscore", 0);
         if (PlayerPrefs.GetInt("Totalscore") == 0 && PlayerPrefs.GetInt("checklvl2") == 1)
@@ -178,21 +232,32 @@ public class PlayerController : MonoBehaviour {
             nextleveltxt.text = "All Levels are Unlocked\nYou can buy the secret level!";
         else
             nextleveltxt.text = "Total Score left to next level : " + PlayerPrefs.GetInt("levelscore");
-
+       
         Score = 0;
         check = 0;
         dead1 = false;
         Apple.ground = GameObject.Find("Ground");
         Apple.ground2 = GameObject.Find("Ground2");
-        Apple.RandomApple();
-        GameOverText.text = "";
-        ScoreText.text = "Score : " + Score;
-        CreditText.text = "Credits " + Credits; 
+        
+        
 
         
         //----------------------
-        for (int i =0;i<3;i++)
-        AddGameObject();
+        if(Size==0.65f)
+            Head.GetInfo().SetScale(Size-0.5f);
+        Head.GetInfo().SetXY(0.29f,-0.34f);
+        if (PlayerPrefs.GetInt("AnotherGame") == 0)
+        {
+            PlayerPrefs.SetInt("TempScore", 0);
+            for (int i = 0; i < 3; i++)
+                AddGameObject();
+        }
+        else
+        {
+            Score = PlayerPrefs.GetInt("TempScore");
+            for (int i = 0; i < PlayerPrefs.GetInt("CountTail"); i++)
+                AddGameObject();
+        }
         
         //----------------------
         StartCoroutine(wait());
@@ -200,9 +265,9 @@ public class PlayerController : MonoBehaviour {
             LevelChallenge();
 
         //--------------------------
+
         
-       
-        switch(Application.loadedLevel)
+        switch (Application.loadedLevel)
         {
             case 1:
                 {
@@ -229,8 +294,8 @@ public class PlayerController : MonoBehaviour {
                     break;
                 }
         }
-        
 
+       
     }
     private IEnumerator Pause()
     {
@@ -282,7 +347,7 @@ public class PlayerController : MonoBehaviour {
                 {
                     LevelText.text = "LEVEL 1";
                     if(PlayerPrefs.GetInt("LVL_ACCESS")==1)
-                    if (PlayerPrefs.GetInt("Highscore") >= 15)
+                    if (PlayerPrefs.GetInt("highscorenew") >= 15)
                         PlayerPrefs.SetInt("LVL_ACCESS", 2);
                     break;
                 }
@@ -333,6 +398,30 @@ public class PlayerController : MonoBehaviour {
                 }
         }
     }
+    
+    IEnumerator Wait3sec(GameObject obj )
+    {
+        int innercount = 0;
+        Node<BodyPart> pos = Head;
+        while (pos.GetNext() != null)
+        {
+            innercount++;
+            pos = pos.GetNext();
+        }
+        if (Score >= 20 && Score<30 ||Score <20)
+            yield return new WaitForSeconds(3f);
+        else if (Score >= 30 && Score<40)
+            yield return new WaitForSeconds(4f);
+        else if (Score >= 40 && Score<50)
+            yield return new WaitForSeconds(5f);
+        else if (Score >= 50 && Score<60)
+            yield return new WaitForSeconds(6f);
+        else if (Score >= 60)
+            yield return new WaitForSeconds(7f);
+        
+        if(innercount>=3)
+            obj.tag = "Tail";
+    }
     IEnumerator wait()
     {
         keyboard = false;
@@ -355,7 +444,19 @@ public class PlayerController : MonoBehaviour {
 
         yield return new WaitForSeconds(0.5f);
         LevelText.text = "";
+       
+        if(Score>=20 && Score<30)
+            yield return new WaitForSeconds(2f);
+        else if(Score>=30 && Score < 40)
+            yield return new WaitForSeconds(3f);
+        else if (Score >= 40 && Score < 50)
+            yield return new WaitForSeconds(4f);
+        else if (Score >= 50 && Score < 60)
+            yield return new WaitForSeconds(5f);
+        else if (Score >= 60)
+            yield return new WaitForSeconds(6f);
 
+        Apple.RandomApple();
     }
     IEnumerator StartScene()
     {
@@ -373,8 +474,8 @@ public class PlayerController : MonoBehaviour {
    
         IEnumerator LeaderBoardTime()
     {
-        
-        float fadeTime = GameObject.Find("Head").GetComponent<FadeScene>().BeginFade(1);
+
+        float fadeTime = GameObject.FindWithTag("Head").GetComponent<FadeScene>().BeginFade(1);
         yield return new WaitForSeconds(fadeTime);
         
         SceneManager.LoadScene("ScoreScene");
@@ -517,23 +618,52 @@ public class PlayerController : MonoBehaviour {
             x += 0.2f;
         }
     }
+    public void startgameoverscene()
+    {
+        PlayerPrefs.SetInt("doublescore", 1);
+        PlayerPrefs.SetInt("CountTail", 3);
+        PlayerPrefs.SetInt("AnotherGame", 0);
+        StartCoroutine(LeaderBoardTime());
+    }
+    public void startanotherlivescene(string sceneName)
+    {
+        if (PlayerPrefs.GetInt("Live") > 0)
+        {
+            PlayerPrefs.SetInt("Live", PlayerPrefs.GetInt("Live") - 1);
+            PlayerPrefs.SetInt("AnotherGame", 1);
+            SceneManager.LoadScene(sceneName);
+        }
+        else
+        {
+            
+            Debug.Log("You Dont have any Lives , Go to the store and purchase 'Another Live'");
+        }
+    }
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Wall") || other.gameObject.CompareTag("Enemy") || other.gameObject.CompareTag("Tail"))
         {
+            
+            counttail = 3;
             dead1 = true;
+            Panel.SetActive(true);
+            LivesText.text = "Lifes : " + PlayerPrefs.GetInt("Live");
             Time.timeScale = 0;
             //AchivmentsUnlocked = achivmentsystem.IfAchived();
-            StartCoroutine(LeaderBoardTime());
-            
+            //startgameoverscene();
+           
             tempscore +=Score;
-
+         
             Node<BodyPart> tmp = Head;
+            
             while (tmp != null)
             {
+                
                 tmp.GetInfo().SetMask(0);
                 tmp = tmp.GetNext();
+                
             }
+            
             Time.timeScale = 1;
             achivmentsystem.IfAchived();
             achivmentscores = achivmentsystem.getachivments();
@@ -550,8 +680,11 @@ public class PlayerController : MonoBehaviour {
     }
     void EngageApple(string appletag, Collider other,int appletype)
     {
+
         if (other.gameObject.CompareTag(appletag))
         {
+            counttail++;
+            PlayerPrefs.SetInt("CountTail", counttail);
             if (ClickObk.mute == false)
             {
                 if (appletag != "RedApple")
@@ -569,7 +702,8 @@ public class PlayerController : MonoBehaviour {
 
             other.gameObject.tag = "non";//beacuse the function enters twice on the same object,the object does not have enougth time to disapeare.
             Destroy(other.gameObject);
-            Score += appletype;
+            Score += (appletype * PlayerPrefs.GetInt("doublescore",1));
+            PlayerPrefs.SetInt("TempScore", Score);
             Apple.generate++;
             Apple.RandomApple();
             AddGameObject();
@@ -579,7 +713,7 @@ public class PlayerController : MonoBehaviour {
             if (PlayerPrefs.GetInt("levelscore") > 0)
             {
 
-                PlayerPrefs.SetInt("levelscore", PlayerPrefs.GetInt("levelscore") - appletype);
+                PlayerPrefs.SetInt("levelscore", PlayerPrefs.GetInt("levelscore") - (appletype * PlayerPrefs.GetInt("doublescore",1)));
                 if (PlayerPrefs.GetInt("Totalscore") >= 1200 && PlayerPrefs.GetInt("checklvl3") == 4)
                     nextleveltxt.text = "All Levels are Unlocked\nWait For Final Release";
                 else
@@ -641,7 +775,7 @@ public class PlayerController : MonoBehaviour {
             }
              AchivmentsUnlocked = achivmentsystem.IfAchived();
 
-            PlayerPrefs.SetInt("Totalscore", PlayerPrefs.GetInt("Totalscore") + appletype);
+            PlayerPrefs.SetInt("Totalscore", PlayerPrefs.GetInt("Totalscore") + (appletype * PlayerPrefs.GetInt("doublescore",1)));
         }
         
 
@@ -651,7 +785,9 @@ public class PlayerController : MonoBehaviour {
     void Update()
     {
         timer += Time.deltaTime;
-  
+        GameOverText.text = "";
+        ScoreText.text = "Score : " + Score;
+        CreditText.text = "Credits " + Credits;
 
         if (Input.touchCount > 0)//if there was a touch
         {
@@ -729,7 +865,7 @@ public class PlayerController : MonoBehaviour {
                 }
             default:
                 {
-                    pos = 0.1f;
+                    pos = 0.0625f;
                     leaderboard.tomp = pos;
                     formula();
                     PlayerPrefs.SetInt("saveloc", 4);
@@ -1100,31 +1236,251 @@ public class PlayerController : MonoBehaviour {
     //    }
         
     //}
-    void AddGameObject()
+    public Texture SortTexture(string TextureName)
+    {
+        switch (TextureName)
+        {
+            case ("RareSkinTexture1"):
+                {
+                    PassTexture = RareSkinTexture1;
+                    return RareSkinTexture1;
+                }
+            case ("RareSkinTexture2"):
+                {
+                    PassTexture = RareSkinTexture2;
+                    return RareSkinTexture2;
+                }
+            case ("RareSkinTexture3"):
+                {
+                    PassTexture = RareSkinTexture3;
+                    return RareSkinTexture3;
+                }
+            case ("RareSkinTexture4"):
+                {
+                    PassTexture = RareSkinTexture4;
+                    return RareSkinTexture4;
+                }
+            case ("RareSkinTexture5"):
+                {
+                    PassTexture = RareSkinTexture5;
+                    return RareSkinTexture5;
+                }
+            case ("RareSkinTexture6"):
+                {
+                    PassTexture = RareSkinTexture6;
+                    return RareSkinTexture6;
+                }
+            case ("RareSkinTexture7"):
+                {
+                    PassTexture = RareSkinTexture7;
+                    return RareSkinTexture7;
+                }
+            case ("RareSkinTexture8"):
+                {
+                    PassTexture = RareSkinTexture8;
+                    return RareSkinTexture8;
+                }
+            case ("RareSkinTexture9"):
+                {
+                    PassTexture = RareSkinTexture9;
+                    return RareSkinTexture9;
+                }
+            case ("RareSkinTexture10"):
+                {
+                    PassTexture = RareSkinTexture10;
+                    return RareSkinTexture10;
+                }
+            case ("RareSkinTexture11"):
+                {
+                    PassTexture = RareSkinTexture11;
+                    return RareSkinTexture11;
+                }
+            case ("RareSkinTexture12"):
+                {
+                    PassTexture = RareSkinTexture12;
+                    return RareSkinTexture12;
+                }
+            case ("EpicSkinTexture"):
+                {
+                    PassTexture = EpicSkinTexture;
+                    return EpicSkinTexture;
+                }
+            case ("EpicSkinTexture1"):
+                {
+                    PassTexture = EpicSkinTexture1;
+                    return EpicSkinTexture1;
+                }
+            case ("EpicSkinTexture2"):
+                {
+                    PassTexture = EpicSkinTexture2;
+                    return EpicSkinTexture2;
+                }
+            case ("EpicSkinTexture3"):
+                {
+                    PassTexture = EpicSkinTexture3;
+                    return EpicSkinTexture3;
+                }
+            case ("EpicSkinTexture4"):
+                {
+                    PassTexture = EpicSkinTexture4;
+                    return EpicSkinTexture4;
+                }
+            case ("EpicSkinTexture5"):
+                {
+                    PassTexture = EpicSkinTexture5;
+                    return EpicSkinTexture5;
+                }
+            case ("EpicSkinTexture6"):
+                {
+                    PassTexture = EpicSkinTexture6;
+                    return EpicSkinTexture6;
+                }
+            case ("EpicSkinTexture7"):
+                {
+                    PassTexture = EpicSkinTexture7;
+                    return EpicSkinTexture7;
+                }
+            case ("EpicSkinTexture8"):
+                {
+                    PassTexture = EpicSkinTexture8;
+                    return EpicSkinTexture8;
+                }
+            case ("EpicSkinTexture9"):
+                {
+                    PassTexture = EpicSkinTexture9;
+                    return EpicSkinTexture9;
+                }
+            case ("EpicSkinTexture10"):
+                {
+                    PassTexture = EpicSkinTexture10;
+                    return EpicSkinTexture10;
+                }
+            case ("EpicSkinTexture11"):
+                {
+                    PassTexture = EpicSkinTexture11;
+                    return EpicSkinTexture11;
+                }
+            case ("EpicSkinTexture12"):
+                {
+                    PassTexture = EpicSkinTexture12;
+                    return EpicSkinTexture12;
+                }
+            case ("EpicSkinTexture13"):
+                {
+                    PassTexture = EpicSkinTexture13;
+                    return EpicSkinTexture13;
+                }
+            case ("EpicSkinTexture14"):
+                {
+                    PassTexture = EpicSkinTexture14;
+                    return EpicSkinTexture14;
+                }
+            case ("EpicSkinTexture15"):
+                {
+                    PassTexture = EpicSkinTexture15;
+                    return EpicSkinTexture15;
+                }
+            case ("EpicSkinTexture16"):
+                {
+                    PassTexture = EpicSkinTexture16;
+                    return EpicSkinTexture16;
+                }
+
+            default:return null;
+        }
+    }
+    public static void SetScore2times()
+    {
+        PlayerPrefs.SetInt("doublescore", 2);
+    }
+    public static float SetSize(float size = 0.55f)
     {
         
+        Size = size;
+        return Size;
+
+    }
+    public float GetSize()
+    {
+       
+        return Size;
+    }
+    void AddGameObject()
+    {
+        float Size = GetSize();
+        Color color = Color.blue;
+        TailColor = new Color(PlayerPrefs.GetFloat("R",color.r), PlayerPrefs.GetFloat("G", color.g), PlayerPrefs.GetFloat("B", color.b));//set the color of the snake tail to the his skin
         int count = 1;
         GameObject NewTail = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         Renderer rend = NewTail.GetComponent<Renderer>();
-        rend.material.color = Color.blue;
-        NewTail.transform.localScale -= new Vector3(0.5f, 0.5f, 0.5f);
+        Renderer rendHead = FirstBP.GetComponent<Renderer>(); 
+        if(PlayerPrefs.GetString("Texture")!="")
+        {
+            //rend.material.mainTexture = ItemPurchase.GetTexture();
+            SortTexture(PlayerPrefs.GetString("Texture"));
+            rend.material.mainTexture = PassTexture;
+            //rend.material.mainTexture = itempurchase.GetTexture();
+             
+        }
+        else
+            rend.material.color = TailColor;
+        NewTail.transform.localScale -= new Vector3(Size, Size, Size);
         SphereCollider TailColider = (SphereCollider)NewTail.gameObject.AddComponent(typeof(SphereCollider));
         TailColider.center = Vector3.zero;
         //-----End of creating new gameobject for tail.
         Node<BodyPart> temp;
-        BodyPart newbd = new BodyPart(0.0f,0.0f,NewTail,counter);
+        BodyPart newbd = new BodyPart(Head.GetInfo().GetX(),Head.GetInfo().GetY(),NewTail,counter);
         temp = new Node<BodyPart>(newbd);
+        
 
+        switch (PlayerPrefs.GetString("SnakeSkin"))
+        {
+            case ("StandartSkin_15c"):
+                {
+                    Tex = StandardSkinTex;
+                    break;
+                }
+            case ("RareSkin_25c"):
+                {
+                    Tex = RareSkinTex;
+                    break;
+                }
+            case ("EpicSkin_40c"):
+                {
+                    Tex = EpicSkinTex;
+                    break;
+                }
+            default:
+                {
+                    Tex = StandardSkinTex;
+                    PlayerPrefs.SetString("SnakeSkin", "StandardSkin");
+                    break;
+                }
+
+        }
+        rendHead.material.mainTexture = Tex;
         Node<BodyPart> pos = Head;
         while (pos.GetNext() != null)
         {
             count++;
             pos = pos.GetNext();
         }
-        if(count>3)
+        if (PlayerPrefs.GetInt("AnotherGame") == 0)
         {
-            NewTail.tag = "Tail";
+            if (count > 3)
+            {
+                NewTail.tag = "Tail";
+            }
         }
+        else
+        {
+            if (count > PlayerPrefs.GetInt("CountTail"))
+            {
+                NewTail.tag = "Tail";
+            }
+        }
+        
+        
         switch (pos.GetInfo().GetMask())
         {
             case 2://last node is moving up
@@ -1151,15 +1507,16 @@ public class PlayerController : MonoBehaviour {
                 {
                     temp.GetInfo().SetXY(pos.GetInfo().GetX() - 0.501f, pos.GetInfo().GetY());
                     temp.GetInfo().SetMask(pos.GetInfo().GetMask());
+                    
                     break;
                 }
 
         }
         temp.GetInfo().SetMask(pos.GetInfo().GetMask());
         pos.SetNext(temp);
+        StartCoroutine(Wait3sec(NewTail));
 
-       
-  }
+    }
     void swipe()
     {
         if (keyboard == true)
@@ -1171,7 +1528,7 @@ public class PlayerController : MonoBehaviour {
                 if (distance.x > 0)
                 {
                     Debug.Log("Right Swipe");
-                    key_pressed = "Right";
+                    key_pressed = "Right"; 
                 }
                 if (distance.x < 0)
                 {
@@ -1196,26 +1553,66 @@ public class PlayerController : MonoBehaviour {
     }
         void movement()//function that moves the obejct(Head of the snake)to the direction that the user will choose.
     {
+        Vector3 CurrentRotation = transform.eulerAngles;
         if (dead1 == false)
         {
             if (keyboard == true)
             {
-
+                
                 if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.LeftArrow))
                 {
                     key_pressed = "Left";
+                    turnRight = true;
+                    turnUp = true;
+                    turnDown = true;
+
+                    if (turnLeft == true)
+                    {
+                        transform.rotation = Quaternion.Euler(0, 148, 0);
+                    }
+                    turnLeft = false;
+
                 }
                 if (Input.GetKey(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.RightArrow))
                 {
                     key_pressed = "Right";
+                    turnLeft = true;
+                    turnUp = true;
+                    turnDown = true;
+
+                    if (turnRight == true)
+                    {
+                        transform.rotation = Quaternion.Euler(0, 320, 0);
+                    }
+                    turnRight = false;
                 }
                 if (Input.GetKey(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.UpArrow))
                 {
                     key_pressed = "Up";
+                    turnDown = true;
+                    turnLeft = true;
+                    turnRight = true;
+
+                    if (turnUp == true)
+                    {
+                        transform.rotation = Quaternion.Euler(0, 230, 0);
+                    }
+                    turnUp = false;
+
                 }
                 if (Input.GetKey(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.DownArrow))
                 {
                     key_pressed = "Down";
+                    turnLeft = true;
+                    turnRight = true;
+                    turnUp = true;
+
+                    if (turnDown == true)
+                    {
+                        transform.rotation = Quaternion.Euler(0, 50, 0);
+                    }
+                    turnDown = false;
+                   
 
                 }
             }

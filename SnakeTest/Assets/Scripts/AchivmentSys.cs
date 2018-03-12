@@ -40,7 +40,7 @@ public class AchivmentSys : MonoBehaviour {
     {
         for(int i =0;i<Achivments.Length;i++)
         {
-            table += (Achivments[i].GetAchivmentName() + "IsAchived :" + Achivments[i].GetIsAchived() + "\n");
+            table += (Achivments[i].GetAchivmentName() + "Is Achieved :" + Achivments[i].GetIsAchived() + "\n");
         }
         return table;
     }
@@ -57,7 +57,7 @@ public class AchivmentSys : MonoBehaviour {
             if(Achivments[i].GetAchivmentScore() <= PlayerController.Score && Achivments[i].GetIsAchived()==0 && Achivments[i].GetLevelUnlock() <= PlayerPrefs.GetInt("Totalscore"))
             {
 
-                achiv.achivmenttext = ("Achivment unlocked :"+Achivments[i].GetAchivmentName() +" +"+Achivments[i].GetAchivmentCredits()+" credits");
+                achiv.achivmenttext = ("Achievement unlocked :" + Achivments[i].GetAchivmentName() +" +"+Achivments[i].GetAchivmentCredits()+" credits");
                 PlayerController.animation = 1;
                 achivedlist.Add(Achivments[i].GetAchivmentName());
                 PlayerPrefs.SetInt("Credits", PlayerPrefs.GetInt("Credits")+ Achivments[i].GetAchivmentCredits());
