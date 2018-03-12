@@ -18,8 +18,8 @@ public class ButtonManager : MonoBehaviour {
         
         PowerPanel.SetActive(false);
         pauseflag = false;
-        HighscoreText.text = "Highscore:" + PlayerPrefs.GetInt("Highscore");
-        SnakeName.text = PlayerPrefs.GetString("NameOfSnake") + " The Snake";
+        
+       
     }
     public void DevModeClicked()
     {
@@ -52,9 +52,10 @@ public class ButtonManager : MonoBehaviour {
             Debug.Log("currentSelectedGameObject is null");
         SceneManager.LoadSceneAsync(newGameLevel);
     }
+
     public void NewGameBtn(string newGameLevel)
     {
-
+        
         SceneManager.LoadSceneAsync(newGameLevel);
         
 

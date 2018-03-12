@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Item : MonoBehaviour {
 
@@ -7,6 +8,8 @@ public class Item : MonoBehaviour {
     string ItemName;
     int ItemWorthCredits;
     int AmountItem;
+    public GameObject creditsimage;
+    public Text CostAmount;
     public static int CreditBalance;
 	void Start () {
         int SmallCreatureAmount = PlayerPrefs.GetInt("SmallCreature");
@@ -20,7 +23,7 @@ public class Item : MonoBehaviour {
         this.AmountItem = _AmountItem;
         
     }
-    public bool Purchase(Texture Tex =null)
+    public bool Purchase(Texture Tex =null,string namecredit=null)
     {
         switch (this.ItemName)
         {
@@ -51,6 +54,33 @@ public class Item : MonoBehaviour {
             case ("2Apples_OneSwallow_15c"):
                 {
                     return Buy2ApplesOneSwallow(15, this.ItemName);
+                }
+            case ("Purchase_Credits"):
+                {
+                    return BuyCredits(namecredit);
+                }
+        }
+        return false;
+    }
+    public bool BuyCredits(string ItemName)
+    {
+        switch(ItemName)
+        {
+
+            case ("150 Credits"):
+                {
+                    IAPManager.Instance.Buy150Credits();
+                    return true;
+                }
+            case ("500 Credits"):
+                {
+                    IAPManager.Instance.Buy500Credits();
+                    return true;
+                }
+            case ("1200 Credits"):
+                {
+                    IAPManager.Instance.Buy1200Credits();
+                    return true;
                 }
         }
         return false;
@@ -111,7 +141,7 @@ public class Item : MonoBehaviour {
     {
         if(PlayerPrefs.GetInt("Live")>=3)
         {
-            Debug.Log("Youv'e reached the maximum amount of lives!");
+            Debug.Log("Youv'e reached the maximum amount of lifes!");
             return false;
         }
         else

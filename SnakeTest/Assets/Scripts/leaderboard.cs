@@ -64,15 +64,15 @@ public class leaderboard : MonoBehaviour {
     void ShowLeaderBoard()
     {
        
-        HighScoreText.text = "Highscore : " + PlayerPrefs.GetInt("Highscore");
+        HighScoreText.text = "Highscore : " + PlayerPrefs.GetInt("highscorenew");
         CurrentScoreText.text = "Your Score : " + score;
         LeaderBoardText.enabled = true;
         HighScoreText.enabled = true;
         CurrentScoreText.enabled = true;
         GameOverText.text = "<GAME OVER>";
-        if (PlayerPrefs.GetInt("Highscore") < score)
+        if (PlayerPrefs.GetInt("highscorenew") < score)
         {
-            PlayerPrefs.SetInt("Highscore", score);
+            PlayerPrefs.SetInt("highscorenew", score);
             Newhighscore.enabled = true;
             Newhighscore.text = "NEW HIGH SCORE!";
         }

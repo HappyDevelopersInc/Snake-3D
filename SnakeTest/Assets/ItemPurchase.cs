@@ -16,6 +16,7 @@ public class ItemPurchase : MonoBehaviour {
     public Text ItemDescription;
     public Text CreditNumber;
     public Text CostAmount;
+    public GameObject creditsimage;
     public Image ItemImage;
     public Sprite[] ItemSprite;
     public Texture Tex;
@@ -29,6 +30,7 @@ public class ItemPurchase : MonoBehaviour {
     int apples;
     public Text AnotherLives;
     public static Texture PassTexture;
+    
     //------------------------GAMEOBJECTS----
     public GameObject StandardSkin;
     public GameObject RareSkin;
@@ -45,6 +47,7 @@ public class ItemPurchase : MonoBehaviour {
     public GameObject ApplesOneSwallowSpin;
     public GameObject ApplesOneSwallowText;
     public GameObject Credit3D;
+    public GameObject CreditsPurchase;
     //------RareSkinTextures---------
     public Texture RareSkinTexture1;
     public Texture RareSkinTexture2;
@@ -96,6 +99,7 @@ public class ItemPurchase : MonoBehaviour {
         ApplesOneSwallowSpin.SetActive(false);
         ApplesOneSwallowText.SetActive(false);
         Credit3D.SetActive(false);
+        CreditsPurchase.SetActive(false);
         hex = "1";
         PassTexture = SortTexture(PlayerPrefs.GetString("Texture"));
         tempgo = PlayerPrefs.GetString("checkcolor","");
@@ -106,6 +110,7 @@ public class ItemPurchase : MonoBehaviour {
         {
             case ("StandartSkin_15c"):
                 {
+                    ItemDescription.text = "The Standart skin has 8 different verities, Design your snake the way you like!";
                     obj = StandardSkinNode;
                     StandardSkins.SetActive(true);
                     StandardSkin.SetActive(true);
@@ -119,6 +124,7 @@ public class ItemPurchase : MonoBehaviour {
                 }
             case ("RareSkin_25c"):
                 {
+                    ItemDescription.text = "The Rare skin has 12 different verities, Design your snake the way you like!";
                     obj = RareSkinNode;
                     RareSkins.SetActive(true);
                     RareSkin.SetActive(true);
@@ -132,6 +138,7 @@ public class ItemPurchase : MonoBehaviour {
                 }
             case ("EpicSkin_40c"):
                 {
+                    ItemDescription.text = "The Epic skin has 17 different verities, Design your snake the way you like!";
                     obj = EpicSkinNode;
                     EpicSkins.SetActive(true);
                     EpicSkin.SetActive(true);
@@ -145,11 +152,12 @@ public class ItemPurchase : MonoBehaviour {
                 }
             case ("Another_Live_10c"):
                 {
+                    ItemDescription.text = "'Another Life' lets you to continue from the point your snake lost.   (MAX 3 LIVES)";
                     AnotherLive.SetActive(true);
                     Live.SetActive(true);
                     
                     item = new Item(ItemName, 10);
-                    ItemNameTXT.text = "Another Live";
+                    ItemNameTXT.text = "Another Life";
                     ItemImage.sprite = ItemSprite[3];
                     CostAmount.text = "" + item.GetItemWorthCredits();
               
@@ -157,6 +165,8 @@ public class ItemPurchase : MonoBehaviour {
                 }
             case ("Small_Creature_15c"):
                 {
+
+                    ItemDescription.text = "'Small Creature' lets you to become a smaller snake and make maneuvers easily.(MAX 10)";
                     SmallCreatureSpin.SetActive(true);
                     SmallCreature.SetActive(true);
                     item = new Item(ItemName, 15);
@@ -167,6 +177,7 @@ public class ItemPurchase : MonoBehaviour {
                 }
             case ("2Apples_OneSwallow_15c"):
                 {
+                    ItemDescription.text = "'2 Apples One Swallow' makes every apple score 2 times greater.          (Max 10)";
                     ApplesOneSwallowSpin.SetActive(true);
                     ApplesOneSwallowText.SetActive(true);
                     item = new Item(ItemName, 15);
@@ -178,6 +189,8 @@ public class ItemPurchase : MonoBehaviour {
                 }
             case ("Purchase_Credits"):
                 {
+                    ItemDescription.text = "Select the Amount of Credits you want to buy.";
+                    CreditsPurchase.SetActive(true);
                     Credit3D.SetActive(true);
                     item = new Item(ItemName);
                     ItemNameTXT.text = "Purchase Credits";
@@ -476,25 +489,39 @@ public class ItemPurchase : MonoBehaviour {
         tempgo = go;
         PlayerPrefs.SetString("checkcolor", tempgo);
     }
+    public void SetCreditsOption()
+    {
+        string go = EventSystem.current.currentSelectedGameObject.name;
+        ItemNameTXT.text = go;
+        switch (go)
+        {
+
+            case ("150 Credits"):
+                {
+                    CostAmount.text = "$ 2.99";
+                    CostAmount.color =  Color.green;
+                    break;
+                }
+            case ("500 Credits"):
+                {
+                    CostAmount.text = "$ 7.99";
+                    CostAmount.color = Color.green;
+                    break;
+                }
+            case ("1200 Credits"):
+                {
+                    CostAmount.text = "$ 12.99";
+                    CostAmount.color = Color.green;
+                    break;
+                }
+        }
+    }
    
     public void pressedbuy()
     {
         BuyPanel.SetActive(true);
         Arrows.SetActive(false);
-        //if (ItemName == "StandartSkin_15c" || ItemName == "RareSkin_25c" || ItemName == "EpicSkin_40c")
-        //{
-        //    if (hex != "1")
-        //    {
-        //        item.Purchase(Tex);
-        //        hex = "1";
-        //    }
-        //}
-        //else if (ItemName == "Another_Live_10c")
-        //{
-        //    BuyPanel.SetActive(true);
-
-        //    item.Purchase();
-        //}
+      
 
     }
     public void BuyItem()
@@ -521,6 +548,12 @@ public class ItemPurchase : MonoBehaviour {
         else if (ItemName == "2Apples_OneSwallow_15c")
         {
             if (item.Purchase())
+                ClosePanel();
+        }
+        else if (ItemName == "Purchase_Credits")
+        {
+
+            if (item.Purchase(null,ItemNameTXT.text))
                 ClosePanel();
         }
     }
@@ -555,7 +588,7 @@ public class ItemPurchase : MonoBehaviour {
     void Update () {
         CreditNumber.text =""+ PlayerPrefs.GetInt("Credits");
         
-        AnotherLives.text = "Extra Lives :" + PlayerPrefs.GetInt("Live");
+        AnotherLives.text = "Extra Lifes :" + PlayerPrefs.GetInt("Live");
         SmallCreatureTXT.text = "Small Creatures :" + PlayerPrefs.GetInt("SmallCreature");
         ApplesOneSwallowTXT.text = "2 Apples One Swallow :" + PlayerPrefs.GetInt("2ApplesOneSwallow");
 	}

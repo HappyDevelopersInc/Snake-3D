@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 public class ClickObk : MonoBehaviour {
     int check = 1;
@@ -12,7 +13,7 @@ public class ClickObk : MonoBehaviour {
     public static bool mute;
     public AudioSource audio;
     
-    
+
     void Awake()
     {
         
@@ -21,12 +22,16 @@ public class ClickObk : MonoBehaviour {
             Destroy(this.gameObject);
         DontDestroyOnLoad(this.gameObject);
     }
-  
+    private void Update()
+    {
+        
+    }
     void Start()
     {
-       
+        
         audio = GetComponent<AudioSource>();
         //audio.Pause();
+        OnMouseDown();
         gameObject.GetComponent<Renderer>().material.color = Color.green;
         mute = false;
     }

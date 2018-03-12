@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
@@ -15,7 +16,10 @@ public class SceneLoader : MonoBehaviour
     private Text loadingText;
 
 
-
+    private void Start()
+    {
+      
+    }
     // Updates once per frame
     void Update()
     {
@@ -50,13 +54,16 @@ public class SceneLoader : MonoBehaviour
         AsyncOperation async;
         // This line waits for 3 seconds before executing the next line in the coroutine.
         // This line is only necessary for this demo. The scenes are so simple that they load too fast to read the "Loading..." text.
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(7);
 
         // Start an asynchronous operation to load the scene that was passed to the LoadNewScene coroutine.
         if (PlayerPrefs.GetInt("FirstTime", 0) == 0)
              async = Application.LoadLevelAsync(scene);
         else
              async = Application.LoadLevelAsync(scene2 );
+      
+        
+        
         
         // While the asynchronous operation to load the new scene is not yet complete, continue waiting until it's done.
         while (!async.isDone)

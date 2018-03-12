@@ -46,7 +46,7 @@ public class Level_Access : MonoBehaviour {
         buttonlvl8.interactable = false;
         buttonlvl9.interactable = false;
         buttonlvl10.interactable = false;
-        Debug.Log(PlayerPrefs.GetInt("Highscore"));
+        Debug.Log(PlayerPrefs.GetInt("highscorenew"));
     }
     
 

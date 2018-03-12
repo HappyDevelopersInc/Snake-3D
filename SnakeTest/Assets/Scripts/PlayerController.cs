@@ -88,6 +88,7 @@ public class PlayerController : MonoBehaviour {
     public Text highscoretext;
     public Text SnakeName;
     public GameObject Panel;
+    public Button SpeedButton;
     //---------------------------------------------
     public GameObject button_lvl1;
     public static Color TailColor;
@@ -175,8 +176,8 @@ public class PlayerController : MonoBehaviour {
             PlayerPrefs.SetInt("rank", 1);
         if (PlayerPrefs.GetInt("LVL_ACCESS")==0)
             PlayerPrefs.SetInt("LVL_ACCESS", 1);
-        if (PlayerPrefs.GetInt("Highscore") == 0)
-            PlayerPrefs.SetInt("Highscore", 0);
+        if (PlayerPrefs.GetInt("highscorenew") == 0)
+            PlayerPrefs.SetInt("highscorenew", 0);
         if (PlayerPrefs.GetInt("Totalscore") == 0)
             PlayerPrefs.SetInt("Totalscore", 0);
         if (PlayerPrefs.GetInt("Totalscore") == 0 && PlayerPrefs.GetInt("checklvl2") == 1)
@@ -238,9 +239,7 @@ public class PlayerController : MonoBehaviour {
         Apple.ground = GameObject.Find("Ground");
         Apple.ground2 = GameObject.Find("Ground2");
         
-        GameOverText.text = "";
-         ScoreText.text = "Score : " + Score;
-        CreditText.text = "Credits " + Credits;
+        
 
         
         //----------------------
@@ -348,7 +347,7 @@ public class PlayerController : MonoBehaviour {
                 {
                     LevelText.text = "LEVEL 1";
                     if(PlayerPrefs.GetInt("LVL_ACCESS")==1)
-                    if (PlayerPrefs.GetInt("Highscore") >= 15)
+                    if (PlayerPrefs.GetInt("highscorenew") >= 15)
                         PlayerPrefs.SetInt("LVL_ACCESS", 2);
                     break;
                 }
@@ -648,7 +647,7 @@ public class PlayerController : MonoBehaviour {
             counttail = 3;
             dead1 = true;
             Panel.SetActive(true);
-            LivesText.text = "Lives : " + PlayerPrefs.GetInt("Live");
+            LivesText.text = "Lifes : " + PlayerPrefs.GetInt("Live");
             Time.timeScale = 0;
             //AchivmentsUnlocked = achivmentsystem.IfAchived();
             //startgameoverscene();
@@ -703,7 +702,7 @@ public class PlayerController : MonoBehaviour {
 
             other.gameObject.tag = "non";//beacuse the function enters twice on the same object,the object does not have enougth time to disapeare.
             Destroy(other.gameObject);
-            Score += (appletype * PlayerPrefs.GetInt("doublescore"));
+            Score += (appletype * PlayerPrefs.GetInt("doublescore",1));
             PlayerPrefs.SetInt("TempScore", Score);
             Apple.generate++;
             Apple.RandomApple();
@@ -714,7 +713,7 @@ public class PlayerController : MonoBehaviour {
             if (PlayerPrefs.GetInt("levelscore") > 0)
             {
 
-                PlayerPrefs.SetInt("levelscore", PlayerPrefs.GetInt("levelscore") - (appletype * PlayerPrefs.GetInt("doublescore")));
+                PlayerPrefs.SetInt("levelscore", PlayerPrefs.GetInt("levelscore") - (appletype * PlayerPrefs.GetInt("doublescore",1)));
                 if (PlayerPrefs.GetInt("Totalscore") >= 1200 && PlayerPrefs.GetInt("checklvl3") == 4)
                     nextleveltxt.text = "All Levels are Unlocked\nWait For Final Release";
                 else
@@ -776,7 +775,7 @@ public class PlayerController : MonoBehaviour {
             }
              AchivmentsUnlocked = achivmentsystem.IfAchived();
 
-            PlayerPrefs.SetInt("Totalscore", PlayerPrefs.GetInt("Totalscore") + (appletype * PlayerPrefs.GetInt("doublescore")));
+            PlayerPrefs.SetInt("Totalscore", PlayerPrefs.GetInt("Totalscore") + (appletype * PlayerPrefs.GetInt("doublescore",1)));
         }
         
 
@@ -786,7 +785,9 @@ public class PlayerController : MonoBehaviour {
     void Update()
     {
         timer += Time.deltaTime;
-  
+        GameOverText.text = "";
+        ScoreText.text = "Score : " + Score;
+        CreditText.text = "Credits " + Credits;
 
         if (Input.touchCount > 0)//if there was a touch
         {
@@ -864,7 +865,7 @@ public class PlayerController : MonoBehaviour {
                 }
             default:
                 {
-                    pos = 0.1f;
+                    pos = 0.0625f;
                     leaderboard.tomp = pos;
                     formula();
                     PlayerPrefs.SetInt("saveloc", 4);
@@ -1407,7 +1408,8 @@ public class PlayerController : MonoBehaviour {
     void AddGameObject()
     {
         float Size = GetSize();
-        TailColor = new Color(PlayerPrefs.GetFloat("R"), PlayerPrefs.GetFloat("G"), PlayerPrefs.GetFloat("B"));//set the color of the snake tail to the his skin
+        Color color = Color.blue;
+        TailColor = new Color(PlayerPrefs.GetFloat("R",color.r), PlayerPrefs.GetFloat("G", color.g), PlayerPrefs.GetFloat("B", color.b));//set the color of the snake tail to the his skin
         int count = 1;
         GameObject NewTail = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         Renderer rend = NewTail.GetComponent<Renderer>();
